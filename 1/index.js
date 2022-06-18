@@ -6,16 +6,7 @@ const changeNumberSystem = () => {
   if (isNaN(number) || isNaN(numberSystem)) {
     return 'Некорректный ввод!';
   }
-  let result = [];
-  do {
-    let addToResult = number % numberSystem;
-    let numberForFurtherDivision = Math.floor(number / numberSystem);
-    result.push(addToResult);
-    number = numberForFurtherDivision;
-  } while (number >= numberSystem);
-  result.push(number); //number here is the last remainder in division cycle
-  const answer = result.reverse().join('');
-  return answer;
+  return (+number).toString(+numberSystem);
 };
 
 console.log(changeNumberSystem());
