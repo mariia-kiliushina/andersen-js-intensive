@@ -45,24 +45,23 @@ const mainObj = {
   d: ['foo', ['bar', 'baz'], { 1: 'one', 2: 'two' }],
 };
 
-const deepCopy = makeObjectDeepCopy(mainObj);
-console.log('deepCopy');
-console.log(deepCopy);
+// const deepCopy = makeObjectDeepCopy(mainObj);
+// console.log('deepCopy');
+// console.log(deepCopy);
 
-deepCopy.b.c = 'CHANGES C';
-deepCopy.b.k.l = 'CHANGES L';
-deepCopy.d[0] = ['changes D'];
-deepCopy.d[1][0] = 'changes bar';
+// deepCopy.b.c = 'CHANGES C';
+// deepCopy.b.k.l = 'CHANGES L';
+// deepCopy.d[0] = ['changes D'];
+// deepCopy.d[1][0] = 'changes bar';
 
-mainObj.b.c = 'again the same C';
-mainObj.b.k.l = 'again the same L';
-mainObj.d[0] = ['again the same D'];
-mainObj.d[1][0] = 'again the same bar';
+// mainObj.b.c = 'again the same C';
+// mainObj.b.k.l = 'again the same L';
+// mainObj.d[0] = ['again the same D'];
+// mainObj.d[1][0] = 'again the same bar';
 
-console.log(deepCopy);
-console.log(mainObj);
+// console.log(deepCopy);
+// console.log(mainObj);
 
-//////
 const selectFromInterval = (arrayOfNums, start, end) => {
   if (!Array.isArray(arrayOfNums))
     throw new Error('Ошибка: первый аргумент должен быть массивом');
@@ -86,8 +85,7 @@ const selectFromInterval = (arrayOfNums, start, end) => {
     steps.forEach((step) =>
       arrayOfNums[step] ? negativeIndexesArray.push(arrayOfNums[step]) : null
     );
-    console.log(negativeIndexesArray);
-    return;
+    return negativeIndexesArray;
   }
 
   let slicedArray = [];
@@ -96,38 +94,39 @@ const selectFromInterval = (arrayOfNums, start, end) => {
       slicedArray.push(arrayOfNums[numberIndex]);
     }
   }
-  console.log(slicedArray);
+  return slicedArray;
 };
 
-//////
-const myIterable = { from: 8, to: 7 };
+// console.log('result of invocation >> selectFromInterval:');
+// console.log(selectFromInterval([3, 7, 9], 2, 4));
+
+const myIterable = { from: 0, to: 7 };
 
 myIterable[Symbol.iterator] = function () {
+  if (this.from === undefined)
+    throw Error(
+      'Ошибка: у итерируемого объекта отсутствует начальное значение'
+    );
+  if (this.to === undefined)
+    throw Error('Ошибка: у итерируемого объекта отсутствует конечное значение');
+  if (typeof this.from !== 'number')
+    throw Error(
+      'Ошибка: значения интервалов должны являться числами. В качестве начала интервала получено нечисловое значение'
+    );
+  if (typeof this.to !== 'number')
+    throw Error(
+      'Ошибка: значения интервалов должны являться числами. В качестве конца интервала получено нечисловое значение'
+    );
+  if (this.to < this.from) {
+    throw Error(
+      'Ошибка: значение конца интервала не может быть меньше значения начала интервала'
+    );
+  }
+
   return {
     iteratorFrom: this.from,
     iteratorTo: this.to,
     next() {
-      if (this.iteratorFrom === undefined)
-        throw Error(
-          'Ошибка: у итерируемого объекта отсутствует начальное значение'
-        );
-      if (this.iteratorTo === undefined)
-        throw Error(
-          'Ошибка: у итерируемого объекта отсутствует конечное значение'
-        );
-      if (typeof this.iteratorFrom !== 'number')
-        throw Error(
-          'Ошибка: значения интервалов должны являться числами. В качестве начала интервала получено нечисловое значение'
-        );
-      if (typeof this.iteratorTo !== 'number')
-        throw Error(
-          'Ошибка: значения интервалов должны являться числами. В качестве конца интервала получено нечисловое значение'
-        );
-      if (this.iteratorTo < this.iteratorFrom)
-        throw Error(
-          'Ошибка: значение конца интервала не может быть меньше значения начала интервала'
-        );
-
       if (this.iteratorFrom <= this.iteratorTo) {
         const result = {
           done: false,
@@ -141,6 +140,7 @@ myIterable[Symbol.iterator] = function () {
   };
 };
 
-for (let item of myIterable) {
-  console.log(item);
-}
+// console.log('result of iteration of >> myIterable:');
+// for (let item of myIterable) {
+//   console.log(item);
+// }
