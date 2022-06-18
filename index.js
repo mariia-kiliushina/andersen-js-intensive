@@ -1,67 +1,3 @@
-const makeObjectDeepCopy = (objectToCopyFrom) => {
-  let objectToArray = Object.entries(objectToCopyFrom);
-
-  const objectDeepCopy = objectToArray.reduce((acc, [key, value]) => {
-    const makeArrayDeepCopy = (value) => {
-      value.reduce((acc, item) => {
-        if (Array.isArray(item)) {
-          acc.push(makeArrayDeepCopy(item));
-        } else if (typeof item === 'object') {
-          acc.push(makeObjectDeepCopy(value));
-        } else {
-          acc.push(item);
-        }
-        return acc;
-      }, []);
-      return value;
-    };
-
-    if (Array.isArray(value)) {
-      console.log('array value');
-      console.log(value);
-      acc[key] = makeArrayDeepCopy(value);
-      console.log('ACCUMULATOR after array');
-      console.log(acc);
-      console.log('ACCUMULATOR key after array');
-      console.log(acc[key]);
-    } else if (typeof value === 'object') {
-      acc[key] = makeObjectDeepCopy(value);
-    } else {
-      acc[key] = value;
-    }
-
-    return acc;
-  }, {});
-
-  return objectDeepCopy;
-};
-
-const mainObj = {
-  a: 'test',
-  b: {
-    c: 777,
-    k: { l: 34 },
-  },
-  d: ['foo', ['bar', 'baz'], { 1: 'one', 2: 'two' }],
-};
-
-// const deepCopy = makeObjectDeepCopy(mainObj);
-// console.log('deepCopy');
-// console.log(deepCopy);
-
-// deepCopy.b.c = 'CHANGES C';
-// deepCopy.b.k.l = 'CHANGES L';
-// deepCopy.d[0] = ['changes D'];
-// deepCopy.d[1][0] = 'changes bar';
-
-// mainObj.b.c = 'again the same C';
-// mainObj.b.k.l = 'again the same L';
-// mainObj.d[0] = ['again the same D'];
-// mainObj.d[1][0] = 'again the same bar';
-
-// console.log(deepCopy);
-// console.log(mainObj);
-
 const selectFromInterval = (arrayOfNums, start, end) => {
   if (!Array.isArray(arrayOfNums))
     throw new Error('Ошибка: первый аргумент должен быть массивом');
@@ -144,3 +80,69 @@ myIterable[Symbol.iterator] = function () {
 // for (let item of myIterable) {
 //   console.log(item);
 // }
+
+const makeObjectDeepCopy = (objectToCopyFrom) => {
+  const makeArrayDeepCopy = (arr) => {
+    const arrayDeepCopy = arr.reduce(function (copiedArr, value) {
+      if (Array.isArray(value)) {
+        copiedArr.push(makeArrayDeepCopy(value));
+      } else if (typeof value === 'object') {
+        copiedArr.push(makeObjectDeepCopy(value));
+      } else {
+        copiedArr.push(value);
+      }
+      return copiedArr;
+    }, []);
+    return arrayDeepCopy;
+  };
+
+  const objectDeepCopy = Object.entries(objectToCopyFrom).reduce(
+    (acc, [key, value]) => {
+      if (Array.isArray(value)) {
+        acc[key] = makeArrayDeepCopy(value);
+      } else if (typeof value === 'object') {
+        acc[key] = makeObjectDeepCopy(value);
+      } else {
+        acc[key] = value;
+      }
+
+      return acc;
+    },
+    {}
+  );
+
+  return objectDeepCopy;
+};
+
+//>>>Example of copying
+// const mainObj = {
+//   a: 'test',
+//   b: {
+//     c: 777,
+//     k: { l: 34 },
+//   },
+//   d: ['foo', ['bar', 'baz'], { 1: 'one', 2: 'two' }],
+// };
+
+// const deepCopy = makeObjectDeepCopy(mainObj);
+// console.log('result of invocation >> selectFromInterval:');
+// console.log('>>>deepCopy');
+// console.log(deepCopy);
+
+//>>>Test cases
+// deepCopy.b.c = 'changes c';
+// deepCopy.b.k.l = 'changes l';
+// deepCopy.d[0] = ['changes foo'];
+// deepCopy.d[1][0] = 'changes bar';
+// deepCopy.d[2]['1'] = 'changes key one';
+
+// mainObj.b.c = 'again the same c';
+// mainObj.b.k.l = 'again the same l';
+// mainObj.d[0] = ['again the same foo'];
+// mainObj.d[1][0] = 'again the same bar';
+// mainObj.d[2]['1'] = 'again the same key one';
+
+// console.log('>>>changed deepCopy');
+// console.log(deepCopy);
+// console.log('>>>changed mainObj');
+// console.log(mainObj);
