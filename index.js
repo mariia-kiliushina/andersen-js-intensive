@@ -124,25 +124,5 @@ const makeObjectDeepCopy = (objectToCopyFrom) => {
 //   d: ['foo', ['bar', 'baz'], { 1: 'one', 2: 'two' }],
 // };
 
-// const deepCopy = makeObjectDeepCopy(mainObj);
-// console.log('result of invocation >> selectFromInterval:');
-// console.log('>>>deepCopy');
-// console.log(deepCopy);
-
-//>>>Test cases
-// deepCopy.b.c = 'changes c';
-// deepCopy.b.k.l = 'changes l';
-// deepCopy.d[0] = ['changes foo'];
-// deepCopy.d[1][0] = 'changes bar';
-// deepCopy.d[2]['1'] = 'changes key one';
-
-// mainObj.b.c = 'again the same c';
-// mainObj.b.k.l = 'again the same l';
-// mainObj.d[0] = ['again the same foo'];
-// mainObj.d[1][0] = 'again the same bar';
-// mainObj.d[2]['1'] = 'again the same key one';
-
-// console.log('>>>changed deepCopy');
-// console.log(deepCopy);
-// console.log('>>>changed mainObj');
-// console.log(mainObj);
+// console.('result of invocation >> makeObjectDeepCopy:');
+// console.log(makeObjectDeepCopy(mainObj));
