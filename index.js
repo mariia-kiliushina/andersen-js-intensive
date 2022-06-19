@@ -3,38 +3,23 @@ const selectFromInterval = (arrayOfNums, start, end) => {
     throw new Error('Ошибка: первый аргумент должен быть массивом');
   if (!arrayOfNums.every((number) => typeof number === 'number'))
     throw new Error(
-      'Ошибка: массив не должен содержать значения отличные от чисел'
+      'Ошибка: массив не должен содержать значения, отличные от чисел'
     );
   if (!Number.isInteger(start) || !Number.isInteger(end))
     throw new Error('Ошибка: параметры интервала должны быть целыми числами');
   if (end < start) [start, end] = [end, start];
-  // из примера не совсем понятно, но потенциально массиву могут быть присвоены значения по
-  // отрицательным индексам. Ниже обработка такого случая
-  if (start < 0 || end < 0) {
-    let negativeIndexesArray = [];
-    let steps = [];
-    let i = 0;
-    do {
-      steps.push(start + i);
-      i += 1;
-    } while (steps[steps.length - 1] < end);
-    steps.forEach((step) =>
-      arrayOfNums[step] ? negativeIndexesArray.push(arrayOfNums[step]) : null
-    );
-    return negativeIndexesArray;
-  }
 
-  let slicedArray = [];
-  for (let numberIndex in arrayOfNums) {
-    if (numberIndex >= start - 1 && numberIndex <= end - 1) {
-      slicedArray.push(arrayOfNums[numberIndex]);
+  let filteredArray = [];
+  for (let number of arrayOfNums) {
+    if (number >= start && number <= end) {
+      filteredArray.push(number);
     }
   }
-  return slicedArray;
+  return filteredArray;
 };
 
 // console.log('result of invocation >> selectFromInterval:');
-// console.log(selectFromInterval([3, 7, 9], 2, 4));
+// console.log(selectFromInterval([-2, -7, -15, 0, 4], -13, -5)); // -7
 
 const myIterable = { from: 0, to: 7 };
 
