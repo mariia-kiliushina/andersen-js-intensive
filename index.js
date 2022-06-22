@@ -1,7 +1,6 @@
 const myFilter = function (filterCallback, thisObject) {
   let filteredArray = [];
   for (let index = 0; index < this.length; index++) {
-    console.log(this[index]);
     if (filterCallback.apply(thisObject, [this[index], index, this])) {
       filteredArray.push(this[index]);
     } else continue;
@@ -24,15 +23,36 @@ function filterCallback(element, index, array) {
 //   x: 100,
 // });
 let filtered = array.myFilter(filterCallback);
-console.log(filtered);
+// console.log(filtered);
 
 ///////
 
 const createDebounceFunction = (callback, delay) => {
-  setTimeout(callback, delay);
+  console.time('debounce');
+  console.time('debAgain');
+
+  let timeout;
+
+  const set = () => {
+    console.log('set timeout');
+    console.timeLog('debAgain');
+    timeout = setTimeout(callback, delay);
+  };
+
+  const stop = () => {
+    console.log('stop timeout');
+    console.timeLog('debAgain');
+    clearTimeout(timeout);
+  };
+
+  set();
+  stop();
+  set();
+  console.timeEnd('debAgain');
 };
 
 const logger = () => {
   console.log('logger invoked');
+  console.timeEnd('debounce');
 };
-createDebounceFunction();
+createDebounceFunction(logger, 2000);
