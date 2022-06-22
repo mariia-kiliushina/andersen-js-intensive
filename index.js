@@ -1,4 +1,6 @@
-const myFilter = function (filterCallback, thisObject) {
+Array.prototype.myFilter = myFilter;
+
+function myFilter(filterCallback, thisObject) {
   let filteredArray = [];
   for (let index = 0; index < this.length; index++) {
     if (filterCallback.apply(thisObject, [this[index], index, this])) {
@@ -6,23 +8,16 @@ const myFilter = function (filterCallback, thisObject) {
     } else continue;
   }
   return filteredArray;
-};
+}
 
 Array.prototype.myFilter = myFilter;
 
-let array = [2, 0, 2, 128, 88, 14, 130, 44, 240, 56];
-
-// function filterCallback(element, index, array) {
-//   return element >= this.x && index % 2 === 0 && array.length >= 8;
-// }
 function filterCallback(element, index, array) {
-  return element >= 200 && index % 2 === 0 && array.length >= 8;
+  return element >= this.x && index % 2 !== 0 && array.length >= 6;
 }
 
-// let filtered = array.myFilter(filterCallback, {
-//   x: 100,
-// });
-let filtered = array.myFilter(filterCallback);
+let array = [2, 128, 88, 14, 130, 44, 240, 56];
+let filtered = array.myFilter(filterCallback, { x: 100 });
 // console.log(filtered);
 
 ///////
@@ -55,5 +50,5 @@ const logger = () => {
 };
 const debounceFunction = createDebounceFunction(logger, 2000);
 debounceFunction();
-setTimeout(debounceFunction, 1000);
 setTimeout(debounceFunction, 1500);
+setTimeout(debounceFunction, 1999);
