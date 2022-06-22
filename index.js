@@ -1,7 +1,7 @@
 const myFilter = function (filterCallback, thisObject) {
-  let x = 30;
   let filteredArray = [];
-  for (let index in this) {
+  for (let index = 0; index < this.length; index++) {
+    console.log(this[index]);
     if (filterCallback.apply(thisObject, [this[index], index, this])) {
       filteredArray.push(this[index]);
     } else continue;
@@ -11,36 +11,28 @@ const myFilter = function (filterCallback, thisObject) {
 
 Array.prototype.myFilter = myFilter;
 
-let array1 = [12, 5, 2, 0, 2, 128, 88, 14, 130, 44, 240, 56];
-let array2 = [12, 12, 12, 12, 12, 12, 12, 12, 112];
+let array = [2, 0, 2, 128, 88, 14, 130, 44, 240, 56];
 
+// function filterCallback(element, index, array) {
+//   return element >= this.x && index % 2 === 0 && array.length >= 8;
+// }
 function filterCallback(element, index, array) {
-  return element >= this.x && index % 2 === 0 && array.length >= 8;
+  return element >= 200 && index % 2 === 0 && array.length >= 8;
 }
 
-let obj1 = {
-  x: 100,
-};
-
-let filtered = array1.myFilter(filterCallback, obj1);
+// let filtered = array.myFilter(filterCallback, {
+//   x: 100,
+// });
+let filtered = array.myFilter(filterCallback);
 console.log(filtered);
 
 ///////
 
-// let obj1 = {
-//   x: 100,
-// };
+const createDebounceFunction = (callback, delay) => {
+  setTimeout(callback, delay);
+};
 
-// let obj = {
-//   x: 40,
-//   filteredArray() {
-//     return [12, 5, 2, 0, 2, 88, 14, 130, 44, 56].filter(function calls(
-//       element
-//     ) {
-//       return element > this.x;
-//     },
-//     anotherObj);
-//   },
-// };
-
-// console.log(obj.filteredArray());
+const logger = () => {
+  console.log('logger invoked');
+};
+createDebounceFunction();
