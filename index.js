@@ -18,9 +18,7 @@ function filterCallback(element, index, array) {
 
 let array = [2, 128, 88, 14, 130, 44, 240, 56];
 let filtered = array.myFilter(filterCallback, { x: 100 });
-
-// console.log(filtered);
-///////
+console.log(filtered);
 
 const createDebounceFunction = (callback, delay) => {
   let timeout;
@@ -37,10 +35,10 @@ const createDebounceFunction = (callback, delay) => {
   };
 };
 
-function logger() {
+const logger = () => {
   console.log(`logger has been invoked`);
-}
+};
 const debounceFunction = createDebounceFunction(logger, 1000);
-// debounceFunction();
-// setTimeout(debounceFunction, 100);
-// setTimeout(debounceFunction, 999);
+debounceFunction();
+setTimeout(debounceFunction, 100);
+setTimeout(debounceFunction, 999);
