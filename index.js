@@ -5,7 +5,7 @@ function myFilter(filterCallback, thisObject) {
   for (let index = 0; index < this.length; index++) {
     if (filterCallback.apply(thisObject, [this[index], index, this])) {
       filteredArray.push(this[index]);
-    } else continue;
+    }
   }
   return filteredArray;
 }
