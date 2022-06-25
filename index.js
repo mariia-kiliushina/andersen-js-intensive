@@ -6,7 +6,7 @@ const concatStrings = (...args) => {
     separator = firstSeparator;
   }
 
-  return function concatenator(...nextArgs) {
+  return function _concatenator(...nextArgs) {
     const [aWord, aSeparator] = nextArgs;
 
     if (typeof aWord !== 'string') {
@@ -15,19 +15,18 @@ const concatStrings = (...args) => {
 
     if (aSeparator !== undefined && typeof aSeparator !== 'string') {
       result += separator + aWord;
-      separator = '';
-      return concatenator;
+      return _concatenator;
     }
 
     if (typeof aSeparator === 'string') {
       result += separator + aWord;
       separator = aSeparator;
-      return concatenator;
+      return _concatenator;
     }
 
     if (!aSeparator) {
       result += separator + aWord;
-      return concatenator;
+      return _concatenator;
     }
   };
 };

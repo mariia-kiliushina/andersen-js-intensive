@@ -30,18 +30,18 @@ describe('String concatenation', () => {
 
   test('', () => {
     expect(concatStrings('first', '123')('second', null)('third', '*')()).toEqual(
-      'first123secondthird'
+      'first123second123third'
     );
   });
 
   test('', () => {
     expect(concatStrings('first', '123')('second', null)('third', '*')('fourth')()).toEqual(
-      'first123secondthird*fourth'
+      'first123second123third*fourth'
     );
   });
   test('', () => {
     expect(concatStrings('first', '123')('second', 78)('third', '*')('fourth')()).toEqual(
-      'first123secondthird*fourth'
+      'first123second123third*fourth'
     );
   });
 
