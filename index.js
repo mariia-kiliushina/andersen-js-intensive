@@ -13,7 +13,7 @@ const concatStrings = (...args) => {
       return result;
     }
 
-    if (aSeparator !== undefined && typeof aSeparator !== 'string') {
+    if (typeof aSeparator !== 'string') {
       result += separator + aWord;
       return _concatenator;
     }
@@ -24,10 +24,8 @@ const concatStrings = (...args) => {
       return _concatenator;
     }
 
-    if (!aSeparator) {
-      result += separator + aWord;
-      return _concatenator;
-    }
+    result += separator + aWord;
+    return _concatenator;
   };
 };
 
