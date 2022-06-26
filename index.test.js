@@ -202,7 +202,9 @@ describe('Calculator', () => {
 });
 
 describe('CalculatorErrors', () => {
+  let calculator;
   beforeEach(() => {
+    calculator = new Calculator(10, 2);
     jest.spyOn(console, 'log');
   });
 
@@ -211,88 +213,165 @@ describe('CalculatorErrors', () => {
   });
 
   test('', () => {
-    expect(() => new Calculator(10)).toThrow('Expected 2 arguments instead got 1');
+    expect(() => new Calculator(10)).toThrow('Expected an argument instead got undefined');
   });
+
+  test('', () => {
+    expect(() => new Calculator('123', 90)).toThrow(
+      'Expected a valid number as an argument instead got 123'
+    );
+  });
+
   test('', () => {
     expect(() => new Calculator(Infinity, 90)).toThrow(
-      'Expected valid number as "x" instead got "Infinity | -Infinity | NaN"'
+      'Expected a valid number as an argument instead got Infinity'
     );
   });
   test('', () => {
     expect(() => new Calculator(-Infinity, 90)).toThrow(
-      'Expected valid number as "x" instead got "Infinity | -Infinity | NaN"'
+      'Expected a valid number as an argument instead got -Infinity'
     );
   });
   test('', () => {
     expect(() => new Calculator(NaN, 90)).toThrow(
-      'Expected valid number as "x" instead got "Infinity | -Infinity | NaN"'
+      'Expected a valid number as an argument instead got NaN'
     );
   });
   test('', () => {
     expect(() => new Calculator(90, Infinity)).toThrow(
-      'Expected valid number as "y" instead got "Infinity | -Infinity | NaN"'
+      'Expected a valid number as an argument instead got Infinity'
     );
   });
   test('', () => {
     expect(() => new Calculator(90, -Infinity)).toThrow(
-      'Expected valid number as "y" instead got "Infinity | -Infinity | NaN"'
+      'Expected a valid number as an argument instead got -Infinity'
     );
   });
   test('', () => {
     expect(() => new Calculator(90, NaN)).toThrow(
-      'Expected valid number as "y" instead got "Infinity | -Infinity | NaN"'
+      'Expected a valid number as an argument instead got NaN'
     );
   });
 
   test('', () => {
     expect(() => new Calculator('76', 89)).toThrow(
-      'Expected number as "x" instead got some other type'
+      'Expected a valid number as an argument instead got 76'
     );
   });
   test('', () => {
     expect(() => new Calculator([], 89)).toThrow(
-      'Expected number as "x" instead got some other type'
+      'Expected a valid number as an argument instead got '
     );
   });
   test('', () => {
     expect(() => new Calculator({}, 89)).toThrow(
-      'Expected number as "x" instead got some other type'
+      'Expected a valid number as an argument instead got [object Object]'
     );
   });
   test('', () => {
     expect(() => new Calculator(true, 89)).toThrow(
-      'Expected number as "x" instead got some other type'
+      'Expected a valid number as an argument instead got true'
     );
   });
   test('', () => {
     expect(() => new Calculator(98909n, 89)).toThrow(
-      'Expected number as "x" instead got some other type'
+      'Expected a valid number as an argument instead got 98909'
     );
   });
 
   test('', () => {
     expect(() => new Calculator(56, '89')).toThrow(
-      'Expected number as "y" instead got some other type'
+      'Expected a valid number as an argument instead got 89'
     );
   });
   test('', () => {
     expect(() => new Calculator(56, [1, 2, 3, 4])).toThrow(
-      'Expected number as "y" instead got some other type'
+      'Expected a valid number as an argument instead got 1,2,3,4'
     );
   });
   test('', () => {
     expect(() => new Calculator(56, { x: '876876' })).toThrow(
-      'Expected number as "y" instead got some other type'
+      'Expected a valid number as an argument instead got [object Object]'
     );
   });
   test('', () => {
     expect(() => new Calculator(56, false)).toThrow(
-      'Expected number as "y" instead got some other type'
+      'Expected a valid number as an argument instead got false'
     );
   });
   test('', () => {
     expect(() => new Calculator(56, 9891232409n)).toThrow(
-      'Expected number as "y" instead got some other type'
+      'Expected a valid number as an argument instead got 9891232409'
+    );
+  });
+
+  test('', () => {
+    let calculator = new Calculator(10, 2);
+    expect(() => calculator.setX()).toThrow('Expected an argument instead got undefined');
+  });
+  test('', () => {
+    expect(() => calculator.setX('cat')).toThrow(
+      'Expected a valid number as an argument instead got cat'
+    );
+  });
+  test('', () => {
+    expect(() => calculator.setX(true)).toThrow(
+      'Expected a valid number as an argument instead got true'
+    );
+  });
+  test('', () => {
+    expect(() => calculator.setX([])).toThrow(
+      'Expected a valid number as an argument instead got '
+    );
+  });
+
+  test('', () => {
+    expect(() => calculator.setX({})).toThrow(
+      'Expected a valid number as an argument instead got [object Object]'
+    );
+  });
+
+  test('', () => {
+    expect(() => calculator.setX(93847923847n)).toThrow(
+      'Expected a valid number as an argument instead got 93847923847'
+    );
+  });
+
+  test('', () => {
+    expect(() => calculator.setY()).toThrow('Expected an argument instead got undefined');
+  });
+  test('', () => {
+    expect(() => calculator.setY('cat')).toThrow(
+      'Expected a valid number as an argument instead got cat'
+    );
+  });
+  test('', () => {
+    expect(() => calculator.setY(true)).toThrow(
+      'Expected a valid number as an argument instead got true'
+    );
+  });
+  test('', () => {
+    expect(() => calculator.setY([])).toThrow(
+      'Expected a valid number as an argument instead got '
+    );
+  });
+
+  test('', () => {
+    expect(() => calculator.setY({})).toThrow(
+      'Expected a valid number as an argument instead got [object Object]'
+    );
+  });
+
+  test('', () => {
+    expect(() => calculator.setY(93847923847n)).toThrow(
+      'Expected a valid number as an argument instead got 93847923847'
+    );
+  });
+
+  test('', () => {
+    let calculator = new Calculator(10, 0);
+    expect(() => calculator.logDiv()).toThrow(
+      'You cannot divide by zero. Please change the value of the "y" argument'
     );
   });
 });

@@ -29,32 +29,53 @@ const concatStrings = (...args) => {
   };
 };
 
+const checkIsDefined = (arg) => {
+  if (arg === undefined) {
+    throw new Error('Expected an argument instead got undefined');
+  }
+};
+
+const isInvalidNumber = (arg) => {
+  return arg === Infinity || arg === -Infinity || isNaN(arg);
+};
+
+const checkIfNumberAndIfValidNumber = (arg) => {
+  if (typeof arg !== 'number' || isInvalidNumber(arg)) {
+    throw new Error(`Expected a valid number as an argument instead got ${arg}`);
+  }
+};
+
 class Calculator {
   constructor(x, y) {
-    if (y === undefined) {
-      throw new Error('Expected 2 arguments instead got 1');
-    }
+    this.checkIsDefined = (arg) => {
+      if (arg === undefined) {
+        throw new Error('Expected an argument instead got undefined');
+      }
+    };
+    this.isInvalidNumber = (arg) => {
+      return arg === Infinity || arg === -Infinity || isNaN(arg);
+    };
+    this.checkIfNumberAndIfValidNumber = (arg) => {
+      if (typeof arg !== 'number' || this.isInvalidNumber(arg)) {
+        throw new Error(`Expected a valid number as an argument instead got ${arg}`);
+      }
+    };
+    this.checkIsDefined(y);
+    this.checkIfNumberAndIfValidNumber(x);
+    this.checkIfNumberAndIfValidNumber(y);
 
-    if (typeof x !== 'number') {
-      throw new Error('Expected number as "x" instead got some other type');
-    }
-    if (typeof y !== 'number') {
-      throw new Error('Expected number as "y" instead got some other type');
-    }
-    if (x === Infinity || x === -Infinity || isNaN(x)) {
-      throw new Error('Expected valid number as "x" instead got "Infinity | -Infinity | NaN"');
-    }
-    if (y === Infinity || y === -Infinity || isNaN(y)) {
-      throw new Error('Expected valid number as "y" instead got "Infinity | -Infinity | NaN"');
-    }
     this.x = x;
     this.y = y;
   }
   setX(newX) {
+    checkIsDefined(newX);
+    checkIfNumberAndIfValidNumber(newX);
     this.x = newX;
     return this;
   }
   setY(newY) {
+    checkIsDefined(newY);
+    checkIfNumberAndIfValidNumber(newY);
     this.y = newY;
     return this;
   }
