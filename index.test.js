@@ -1,6 +1,6 @@
 const { concatStrings, Calculator } = require('./index');
 
-describe.skip('concatStrings', () => {
+describe('concatStrings', () => {
   test('', () => {
     expect(concatStrings('first')()).toEqual('first');
   });
@@ -373,5 +373,39 @@ describe('CalculatorErrors', () => {
     expect(() => calculator.logDiv()).toThrow(
       'You cannot divide by zero. Please change the value of the "y" argument'
     );
+  });
+});
+
+describe('CalculatorReturnMethod', () => {
+  let calculator;
+
+  beforeEach(() => {
+    calculator = new Calculator(16, 8);
+    jest.spyOn(console, 'log');
+  });
+
+  afterEach(() => {
+    console.log.mockRestore();
+  });
+
+  test('logMul', () => {
+    const logCalculatorMul = calculator.logMul;
+    logCalculatorMul();
+    expect(console.log).toHaveBeenCalledWith(128);
+  });
+  test('logDiv', () => {
+    const logCalculatorDiv = calculator.logDiv;
+    logCalculatorDiv();
+    expect(console.log).toHaveBeenCalledWith(2);
+  });
+  test('logSum', () => {
+    const logCalculatorSum = calculator.logSum;
+    logCalculatorSum();
+    expect(console.log).toHaveBeenCalledWith(24);
+  });
+  test('logSub', () => {
+    const logCalculatorSub = calculator.logSub;
+    logCalculatorSub();
+    expect(console.log).toHaveBeenCalledWith(8);
   });
 });
