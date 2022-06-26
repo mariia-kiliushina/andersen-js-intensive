@@ -200,3 +200,99 @@ describe('Calculator', () => {
     expect(calculator.x).toEqual(65);
   });
 });
+
+describe('CalculatorErrors', () => {
+  beforeEach(() => {
+    jest.spyOn(console, 'log');
+  });
+
+  afterEach(() => {
+    console.log.mockRestore();
+  });
+
+  test('', () => {
+    expect(() => new Calculator(10)).toThrow('Expected 2 arguments instead got 1');
+  });
+  test('', () => {
+    expect(() => new Calculator(Infinity, 90)).toThrow(
+      'Expected valid number as "x" instead got "Infinity | -Infinity | NaN"'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator(-Infinity, 90)).toThrow(
+      'Expected valid number as "x" instead got "Infinity | -Infinity | NaN"'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator(NaN, 90)).toThrow(
+      'Expected valid number as "x" instead got "Infinity | -Infinity | NaN"'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator(90, Infinity)).toThrow(
+      'Expected valid number as "y" instead got "Infinity | -Infinity | NaN"'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator(90, -Infinity)).toThrow(
+      'Expected valid number as "y" instead got "Infinity | -Infinity | NaN"'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator(90, NaN)).toThrow(
+      'Expected valid number as "y" instead got "Infinity | -Infinity | NaN"'
+    );
+  });
+
+  test('', () => {
+    expect(() => new Calculator('76', 89)).toThrow(
+      'Expected number as "x" instead got some other type'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator([], 89)).toThrow(
+      'Expected number as "x" instead got some other type'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator({}, 89)).toThrow(
+      'Expected number as "x" instead got some other type'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator(true, 89)).toThrow(
+      'Expected number as "x" instead got some other type'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator(98909n, 89)).toThrow(
+      'Expected number as "x" instead got some other type'
+    );
+  });
+
+  test('', () => {
+    expect(() => new Calculator(56, '89')).toThrow(
+      'Expected number as "y" instead got some other type'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator(56, [1, 2, 3, 4])).toThrow(
+      'Expected number as "y" instead got some other type'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator(56, { x: '876876' })).toThrow(
+      'Expected number as "y" instead got some other type'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator(56, false)).toThrow(
+      'Expected number as "y" instead got some other type'
+    );
+  });
+  test('', () => {
+    expect(() => new Calculator(56, 9891232409n)).toThrow(
+      'Expected number as "y" instead got some other type'
+    );
+  });
+});

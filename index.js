@@ -32,30 +32,20 @@ const concatStrings = (...args) => {
 class Calculator {
   constructor(x, y) {
     if (y === undefined) {
-      throw new Error(
-        'Expected 2 arguments instead got 1.You must provide both arguments to proceed'
-      );
+      throw new Error('Expected 2 arguments instead got 1');
     }
 
     if (typeof x !== 'number') {
-      throw new Error(
-        'Expected number as "x" instead got some other type.You must provide number to proceed'
-      );
+      throw new Error('Expected number as "x" instead got some other type');
     }
     if (typeof y !== 'number') {
-      throw new Error(
-        'Expected number as "y" instead got some other type.You must provide number to proceed'
-      );
+      throw new Error('Expected number as "y" instead got some other type');
     }
     if (x === Infinity || x === -Infinity || isNaN(x)) {
-      throw new Error(
-        'Expected valid number as "x" instead got "Infinity | -Infinity | NaN".You must provide  valid number to proceed'
-      );
+      throw new Error('Expected valid number as "x" instead got "Infinity | -Infinity | NaN"');
     }
     if (y === Infinity || y === -Infinity || isNaN(y)) {
-      throw new Error(
-        'Expected valid number as "y" instead got "Infinity | -Infinity | NaN".You must provide  valid number to proceed'
-      );
+      throw new Error('Expected valid number as "y" instead got "Infinity | -Infinity | NaN"');
     }
     this.x = x;
     this.y = y;
