@@ -29,4 +29,64 @@ const concatStrings = (...args) => {
   };
 };
 
-module.exports = { concatStrings };
+class Calculator {
+  constructor(x, y) {
+    if (y === undefined) {
+      throw new Error(
+        'Expected 2 arguments instead got 1.You must provide both arguments to proceed'
+      );
+    }
+
+    if (typeof x !== 'number') {
+      throw new Error(
+        'Expected number as "x" instead got some other type.You must provide number to proceed'
+      );
+    }
+    if (typeof y !== 'number') {
+      throw new Error(
+        'Expected number as "y" instead got some other type.You must provide number to proceed'
+      );
+    }
+    if (x === Infinity || x === -Infinity || isNaN(x)) {
+      throw new Error(
+        'Expected valid number as "x" instead got "Infinity | -Infinity | NaN".You must provide  valid number to proceed'
+      );
+    }
+    if (y === Infinity || y === -Infinity || isNaN(y)) {
+      throw new Error(
+        'Expected valid number as "y" instead got "Infinity | -Infinity | NaN".You must provide  valid number to proceed'
+      );
+    }
+    this.x = x;
+    this.y = y;
+  }
+  setX(newX) {
+    this.x = newX;
+    return this;
+  }
+  setY(newY) {
+    this.y = newY;
+    return this;
+  }
+  logSum() {
+    console.log(this.x + this.y);
+    return this;
+  }
+  logMul() {
+    console.log(this.x * this.y);
+    return this;
+  }
+  logSub() {
+    console.log(this.x - this.y);
+    return this;
+  }
+  logDiv = () => {
+    if (this.y === 0) {
+      throw new Error('You cannot divide by zero. Please change the value of the "y" argument');
+    }
+    console.log(this.x / this.y);
+    return this;
+  };
+}
+
+module.exports = { concatStrings, Calculator };
