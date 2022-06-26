@@ -1,0 +1,24 @@
+{
+  "name": "andersen-js-intensive",
+  "version": "1.0.0",
+  "description": "JS intensive as part of the Andersen intertnship. Repo consists of code solutions of the given practical tasks",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watchAll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariia-kiliushina/andersen-js-intensive.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariia-kiliushina/andersen-js-intensive/issues"
+  },
+  "homepage": "https://github.com/mariia-kiliushina/andersen-js-intensive#readme",
+  "devDependencies": {
+    "jest": "28.1.1"
+  }
+}
