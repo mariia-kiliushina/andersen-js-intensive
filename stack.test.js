@@ -49,6 +49,8 @@ describe('Stack', () => {
 
   test('', () => {
     expect(Stack.fromIterable(['a', 'f', 'h']).stack).toEqual({ 1: 'a', 2: 'f', 3: 'h' });
+    expect(Stack.fromIterable(['a', 'f', 'h']).stackSize).toEqual(3);
+    expect(Stack.fromIterable(['a', 'f', 'h']).maxNumOfElements).toEqual(3);
   });
   test('', () => {
     expect(Stack.fromIterable({ 1: 'a', 2: 'f', 3: 'h' }).stack).toEqual({
@@ -57,11 +59,13 @@ describe('Stack', () => {
       3: 'h',
     });
     expect(Stack.fromIterable({ 1: 'a', 2: 'f', 3: 'h' }).stackSize).toEqual(3);
+    expect(Stack.fromIterable({ 1: 'a', 2: 'f', 3: 'h' }).maxNumOfElements).toEqual(3);
   });
 
   test('', () => {
     expect(Stack.fromIterable('abcd').stack).toEqual({ 1: 'a', 2: 'b', 3: 'c', 4: 'd' });
     expect(Stack.fromIterable('abcd').stackSize).toEqual(4);
+    expect(Stack.fromIterable('abcd').maxNumOfElements).toEqual(4);
   });
 
   test('', () => {
@@ -70,6 +74,7 @@ describe('Stack', () => {
     map.set('2', 5);
     expect(Stack.fromIterable(map).stack).toEqual({ 1: 'foo', 2: 5 });
     expect(Stack.fromIterable(map).stackSize).toEqual(2);
+    expect(Stack.fromIterable(map).maxNumOfElements).toEqual(2);
   });
 
   test('', () => {
@@ -78,5 +83,15 @@ describe('Stack', () => {
     mySet.add('apple');
     expect(Stack.fromIterable(mySet).stack).toEqual({ 1: 90, 2: 'apple' });
     expect(Stack.fromIterable(mySet).stackSize).toEqual(2);
+    expect(Stack.fromIterable(mySet).maxNumOfElements).toEqual(2);
+  });
+  test('', () => {
+    let mySet = new Set();
+    mySet.add(90);
+    mySet.add('apple');
+    expect(Stack.fromIterable(mySet).stack).toEqual({ 1: 90, 2: 'apple' });
+    expect(() => Stack.fromIterable(mySet).push('another one')).toThrow(
+      'Stack is already full. No elements can be pushed'
+    );
   });
 });
