@@ -42,15 +42,7 @@ class Stack {
   toArray() {
     return Object.values(this.stack);
   }
+  fromIterable(iterable) {}
 }
 
-let myStack = new Stack(3);
-myStack.push('a');
-myStack.push('b');
-myStack.push('c');
-console.log(myStack);
-console.log(myStack.pop());
-console.log(myStack.pop());
-myStack.push('hehe');
-console.log(myStack.peek());
 module.exports = { Stack };
