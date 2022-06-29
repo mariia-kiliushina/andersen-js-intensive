@@ -1,5 +1,4 @@
 class LinkedList {
-  static fromIterable(iterable) {}
   constructor() {
     this.item = (elem) => {
       return {
@@ -10,6 +9,26 @@ class LinkedList {
     this.size = 0;
     this.head = null;
     this.tail = null;
+  }
+  static fromIterable(iterable) {
+    if (typeof iterable !== 'object' && typeof iterable !== 'string') {
+      throw new Error(`Cannot iterate trough ${typeof iterable}`);
+    }
+    let listFromIterable = new this();
+    if (iterable instanceof Map || iterable instanceof Set) {
+      let iterator = iterable.values();
+      while (true) {
+        let nextElement = iterator.next();
+        if (nextElement.done) break;
+        listFromIterable.append(nextElement.value);
+      }
+    } else {
+      for (let i in iterable) {
+        listFromIterable.append(iterable[i]);
+      }
+    }
+
+    return listFromIterable;
   }
 
   append(elem) {
@@ -71,28 +90,31 @@ list.append('ccc');
 list.append('ddd');
 list.append('fff');
 
-console.warn('list.head');
-console.log(list.head);
-console.warn('list.head.next');
-console.log(list.head.next);
-console.warn('list.tail.next');
-console.log(list.tail.next);
-console.warn('list.head.next.next');
-console.log(list.head.next.next);
-list.prepend('first');
-console.warn('list.head after prepend');
-console.log(list.head);
-console.warn('list.head.next after prepend');
-console.log(list.head.next);
-console.warn('list.head.next.next after prepend');
-console.log(list.head.next.next);
-console.log("list.find('first'))");
-console.log(list.find('first'));
-console.log("list.find('eee'))");
-console.log(list.find('eee'));
-console.log("list.find('ccc'))");
-console.log(list.find('ccc'));
-console.log('list.toArray()');
-console.log(list.toArray());
+// console.warn('list.head');
+// console.log(list.head);
+// console.warn('list.head.next');
+// console.log(list.head.next);
+// console.warn('list.tail.next');
+// console.log(list.tail.next);
+// console.warn('list.head.next.next');
+// console.log(list.head.next.next);
+// list.prepend('first');
+// console.warn('list.head after prepend');
+// console.log(list.head);
+// console.warn('list.head.next after prepend');
+// console.log(list.head.next);
+// console.warn('list.head.next.next after prepend');
+// console.log(list.head.next.next);
+// console.log("list.find('first'))");
+// console.log(list.find('first'));
+// console.log("list.find('eee'))");
+// console.log(list.find('eee'));
+// console.log("list.find('ccc'))");
+// console.log(list.find('ccc'));
+// console.log('list.toArray()');
+// console.log(list.toArray());
+
+console.log('Iterable');
+console.log(LinkedList.fromIterable(['s', 'd', 'f', 'g']));
 
 module.exports = { LinkedList };
