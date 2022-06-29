@@ -32,14 +32,31 @@ class LinkedList {
     this.head.next = item;
     this.size += 1;
   }
-  find(elem) {}
-  toArray() {}
+  find(elem) {
+    if (this.head.next.value === elem) {
+      return 'elem was found!!!!';
+    } else {
+      return 'ERROR';
+    }
+  }
+  toArray() {
+    let arrayFromList = [];
+
+    for (let i = 1; i <= this.size; i++) {
+      arrayFromList.push(this.head.next.value);
+    }
+
+    return arrayFromList;
+  }
 }
 
 let list = new LinkedList();
 list.append('aaa');
 list.append('bbb');
 list.append('ccc');
+
+console.log("list.find('aaa')");
+console.log(list.find('aaa'));
 
 console.warn('list.head.next');
 console.log(list.head.next);
@@ -52,3 +69,6 @@ console.warn('list.head.next after prepend');
 console.log(list.head.next);
 console.warn('list.head.next.next after prepend');
 console.log(list.head.next.next);
+console.log("list.find('first'))");
+console.log(list.find('first'));
+console.log(list.toArray());
