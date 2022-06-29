@@ -12,6 +12,27 @@ class Stack {
     this.stackSize = 0;
     this.stack = {};
   }
+  static fromIterable(iterable) {
+    if (typeof iterable !== 'object' && typeof iterable !== 'string') {
+      throw new Error(`Cannot iterate trough ${typeof iterable}`);
+    }
+    let stackFromIterable = new this();
+    if (iterable instanceof Map || iterable instanceof Set) {
+      let iterator = iterable.values();
+      while (true) {
+        let nextElement = iterator.next();
+        if (nextElement.done) break;
+        stackFromIterable.push(nextElement.value);
+      }
+    } else {
+      for (let i in iterable) {
+        stackFromIterable.push(iterable[i]);
+      }
+    }
+
+    stackFromIterable.maxNumOfElements = stackFromIterable.stackSize;
+    return stackFromIterable;
+  }
 
   push(elem) {
     if (this.stackSize >= this.maxNumOfElements) {
@@ -42,7 +63,6 @@ class Stack {
   toArray() {
     return Object.values(this.stack);
   }
-  fromIterable(iterable) {}
 }
 
 module.exports = { Stack };
