@@ -83,38 +83,4 @@ class LinkedList {
   }
 }
 
-let list = new LinkedList();
-list.append('aaa');
-list.append('bbb');
-list.append('ccc');
-list.append('ddd');
-list.append('fff');
-
-// console.warn('list.head');
-// console.log(list.head);
-// console.warn('list.head.next');
-// console.log(list.head.next);
-// console.warn('list.tail.next');
-// console.log(list.tail.next);
-// console.warn('list.head.next.next');
-// console.log(list.head.next.next);
-// list.prepend('first');
-// console.warn('list.head after prepend');
-// console.log(list.head);
-// console.warn('list.head.next after prepend');
-// console.log(list.head.next);
-// console.warn('list.head.next.next after prepend');
-// console.log(list.head.next.next);
-// console.log("list.find('first'))");
-// console.log(list.find('first'));
-// console.log("list.find('eee'))");
-// console.log(list.find('eee'));
-// console.log("list.find('ccc'))");
-// console.log(list.find('ccc'));
-// console.log('list.toArray()');
-// console.log(list.toArray());
-
-console.log('Iterable');
-console.log(LinkedList.fromIterable(['s', 'd', 'f', 'g']));
-
 module.exports = { LinkedList };
