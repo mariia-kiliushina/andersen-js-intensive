@@ -13,7 +13,13 @@ class Stack {
     this.stack = {};
   }
   static fromIterable(iterable) {
-    if (typeof iterable !== 'object' && typeof iterable !== 'string') {
+    if (
+      isNaN(iterable) ||
+      (typeof iterable !== 'string' &&
+        !iterable instanceof Array &&
+        !iterable instanceof Map &&
+        !iterable instanceof Set)
+    ) {
       throw new Error(`Cannot iterate trough ${typeof iterable}`);
     }
     let stackFromIterable = new this();
@@ -42,6 +48,9 @@ class Stack {
     this.stack[this.stackSize] = elem;
   }
   pop() {
+    if (this.stackSize === 0) {
+      throw new Error('Stack is empty. No elements can be popped');
+    }
     let answer = this.stack[this.stackSize];
     delete this.stack[this.stackSize];
     this.stackSize -= 1;
@@ -64,5 +73,8 @@ class Stack {
     return Object.values(this.stack);
   }
 }
+
+// console.log(Stack.fromIterable({ 1: '1', 2: '2', 3: '3' }));
+console.log(Stack.fromIterable('sadasd'));
 
 module.exports = { Stack };

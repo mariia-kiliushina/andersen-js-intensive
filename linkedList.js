@@ -11,7 +11,13 @@ class LinkedList {
     this.tail = null;
   }
   static fromIterable(iterable) {
-    if (typeof iterable !== 'object' && typeof iterable !== 'string') {
+    if (
+      !iterable instanceof Array ||
+      !iterable instanceof Map ||
+      !iterable instanceof Set ||
+      typeof iterable !== 'string' ||
+      isNaN(iterable)
+    ) {
       throw new Error(`Cannot iterate trough ${typeof iterable}`);
     }
     let listFromIterable = new this();
