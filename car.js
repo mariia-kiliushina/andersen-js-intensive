@@ -6,7 +6,9 @@ class Car {
     maxSpeed,
     maxFuelVolume,
     fuelConsumption,
-    currentFuelVolume = 0
+    currentFuelVolume = 0,
+    isStarted = false,
+    mileage = 0
   ) {
     this._brand = brand;
     this._model = model;
@@ -15,6 +17,8 @@ class Car {
     this._maxFuelVolume = maxFuelVolume;
     this._fuelConsumption = fuelConsumption;
     this._currentFuelVolume = currentFuelVolume;
+    this._isStarted = isStarted;
+    this._mileage = mileage;
   }
   get brand() {
     return this._brand;
@@ -90,6 +94,85 @@ class Car {
   }
   set fuelConsumption(newFuelConsumption) {
     this._fuelConsumption = newFuelConsumption;
+  }
+  get currentFuelVolume() {
+    return this._currentFuelVolume;
+  }
+  get isStarted() {
+    return this._isStarted;
+  }
+  get mileage() {
+    return this._mileage;
+  }
+
+  start() {
+    if (this._isStarted) {
+      throw new Error('Машина уже заведена');
+    }
+    this._isStarted = true;
+  }
+  shutDownEngine() {
+    if (this._isStarted === false) {
+      throw new Error('Машина ещё не заведена');
+    }
+    this._isStarted = false;
+  }
+  fillUpGasTank(liters) {
+    if (
+      typeof liters !== 'number' ||
+      liters === NaN ||
+      liters === Infinity ||
+      liters === -Infinity ||
+      liters <= 0
+    ) {
+      throw new Error('Неверное количество топлива для заправки');
+    }
+    if (this._currentFuelVolume + liters > this._maxFuelVolume) {
+      throw new Error('Топливный бак переполнен');
+    }
+    this._currentFuelVolume += liters;
+  }
+  drive(speed, hours) {
+    if (
+      typeof speed !== 'number' ||
+      speed === NaN ||
+      speed === Infinity ||
+      speed === -Infinity ||
+      speed <= 0
+    ) {
+      throw new Error('Неверная скорость');
+    }
+
+    if (
+      typeof hours !== 'number' ||
+      hours === NaN ||
+      hours === Infinity ||
+      hours === -Infinity ||
+      hours <= 0
+    ) {
+      throw new Error('Неверное количество часов');
+    }
+
+    if (speed > this._maxSpeed) {
+      throw new Error('Машина не может ехать так быстро');
+    }
+
+    if (this._isStarted === false) {
+      throw new Error('Машина должна быть заведена, чтобы ехать');
+    }
+
+    if (this._isStarted === false) {
+      throw new Error('Машина должна быть заведена, чтобы ехать');
+    }
+
+    const mileageToBeDriven = speed * hours;
+    const amountOfFuelToBeConsumed = (mileageToBeDriven * this._fuelConsumption) / 100;
+    if (this._currentFuelVolume < amountOfFuelToBeConsumed) {
+      throw new Error('Недостаточно топлива');
+    }
+
+    this._currentFuelVolume -= amountOfFuelToBeConsumed;
+    this._mileage += mileageToBeDriven;
   }
 }
 
