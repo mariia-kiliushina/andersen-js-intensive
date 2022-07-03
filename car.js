@@ -94,7 +94,7 @@ class Car {
       this._throwTypeErrorWithText('number', newMaxSpeed, 'maxSpeed');
     }
 
-    if (newMaxSpeed < 100 || newMaxSpeed >= 300) {
+    if (newMaxSpeed < 100 || newMaxSpeed > 300) {
       throw 'Max speed should be within 100-300 km/h';
     }
     return 'ok';
@@ -104,8 +104,8 @@ class Car {
       this._throwTypeErrorWithText('number', newMaxFuelVolume, 'maxFuelVolume');
     }
 
-    if (newMaxFuelVolume < 5 || newMaxFuelVolume >= 20) {
-      throw 'Max speed should be within 5-20 (not inclusively) liters';
+    if (newMaxFuelVolume < 5 || newMaxFuelVolume > 20) {
+      throw 'Max fuel volume should be within 5-20  liters';
     }
     return 'ok';
   }
@@ -124,6 +124,9 @@ class Car {
     }
     if (currentFuelVolume < 0) {
       throw new Error('Current fuel volume should be a positive number');
+    }
+    if (currentFuelVolume > this._maxFuelVolume) {
+      throw new Error('Current fuel volume cannot be bigger than max fuel volume');
     }
 
     return 'ok';
@@ -176,7 +179,7 @@ class Car {
     return this._maxFuelVolume;
   }
   set maxFuelVolume(newMaxFuelVolume) {
-    this.maxFuelVolume(newMaxFuelVolume);
+    this._checkMaxFuel(newMaxFuelVolume);
     this._maxFuelVolume = newMaxFuelVolume;
   }
   get fuelConsumption() {
@@ -221,20 +224,12 @@ class Car {
     this._currentFuelVolume += liters;
   }
   drive(speed, hours) {
-    if (this._isNotValidNumber(speed)) {
+    if (this._isNotValidNumber(speed) || this._isNegativeOrZero(speed)) {
       throw new Error('Неверная скорость');
     }
 
-    if (this._isNegativeOrZero(speed)) {
-      throw new Error('Неверное количество топлива для заправки');
-    }
-
-    if (this._isNotValidNumber(hours)) {
+    if (this._isNotValidNumber(hours) || this._isNegativeOrZero(hours)) {
       throw new Error('Неверное количество часов');
-    }
-
-    if (this._isNegativeOrZero(hours)) {
-      throw new Error('Неверное количество топлива для заправки');
     }
 
     if (speed > this._maxSpeed) {
@@ -256,18 +251,4 @@ class Car {
   }
 }
 
-let myCar = new Car({
-  brand: 'asdsd',
-  model: 'hehehehhe',
-  yearOfManufacturing: 1967,
-  maxSpeed: 114,
-  maxFuelVolume: 14,
-  fuelConsumption: 76,
-  currentFuelVolume: 0,
-  isStarted: true,
-  mileage: 90,
-});
-
-console.log(myCar);
-console.log(myCar.);
 module.exports = { Car };
