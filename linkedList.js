@@ -12,29 +12,30 @@ class LinkedList {
   }
   static fromIterable(iterable) {
     if (
-      !iterable instanceof Array ||
-      !iterable instanceof Map ||
-      !iterable instanceof Set ||
-      typeof iterable !== 'string' ||
-      isNaN(iterable)
+      !isNaN(iterable) ||
+      typeof iterable === 'string' ||
+      iterable instanceof Array ||
+      iterable instanceof Map ||
+      iterable instanceof Set
     ) {
+      let listFromIterable = new this();
+      if (iterable instanceof Map || iterable instanceof Set) {
+        let iterator = iterable.values();
+        while (true) {
+          let nextElement = iterator.next();
+          if (nextElement.done) break;
+          listFromIterable.append(nextElement.value);
+        }
+      } else {
+        for (let i in iterable) {
+          listFromIterable.append(iterable[i]);
+        }
+      }
+
+      return listFromIterable;
+    } else {
       throw new Error(`Cannot iterate trough ${typeof iterable}`);
     }
-    let listFromIterable = new this();
-    if (iterable instanceof Map || iterable instanceof Set) {
-      let iterator = iterable.values();
-      while (true) {
-        let nextElement = iterator.next();
-        if (nextElement.done) break;
-        listFromIterable.append(nextElement.value);
-      }
-    } else {
-      for (let i in iterable) {
-        listFromIterable.append(iterable[i]);
-      }
-    }
-
-    return listFromIterable;
   }
 
   append(elem) {

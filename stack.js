@@ -14,30 +14,30 @@ class Stack {
   }
   static fromIterable(iterable) {
     if (
-      isNaN(iterable) ||
-      (typeof iterable !== 'string' &&
-        !iterable instanceof Array &&
-        !iterable instanceof Map &&
-        !iterable instanceof Set)
+      !isNaN(iterable) ||
+      typeof iterable === 'string' ||
+      iterable instanceof Array ||
+      iterable instanceof Map ||
+      iterable instanceof Set
     ) {
-      throw new Error(`Cannot iterate trough ${typeof iterable}`);
-    }
-    let stackFromIterable = new this();
-    if (iterable instanceof Map || iterable instanceof Set) {
-      let iterator = iterable.values();
-      while (true) {
-        let nextElement = iterator.next();
-        if (nextElement.done) break;
-        stackFromIterable.push(nextElement.value);
+      let stackFromIterable = new this();
+      if (iterable instanceof Map || iterable instanceof Set) {
+        let iterator = iterable.values();
+        while (true) {
+          let nextElement = iterator.next();
+          if (nextElement.done) break;
+          stackFromIterable.push(nextElement.value);
+        }
+      } else {
+        for (let i in iterable) {
+          stackFromIterable.push(iterable[i]);
+        }
       }
+      stackFromIterable.maxNumOfElements = stackFromIterable.stackSize;
+      return stackFromIterable;
     } else {
-      for (let i in iterable) {
-        stackFromIterable.push(iterable[i]);
-      }
+      throw new Error(`Cannot iterate through ${typeof iterable}`);
     }
-
-    stackFromIterable.maxNumOfElements = stackFromIterable.stackSize;
-    return stackFromIterable;
   }
 
   push(elem) {
@@ -73,8 +73,5 @@ class Stack {
     return Object.values(this.stack);
   }
 }
-
-// console.log(Stack.fromIterable({ 1: '1', 2: '2', 3: '3' }));
-console.log(Stack.fromIterable('sadasd'));
 
 module.exports = { Stack };
