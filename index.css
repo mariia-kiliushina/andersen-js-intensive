@@ -9,17 +9,17 @@
 
 .input {
   height: 10vh;
-  width: 100%;
+  width: 60%;
   font-size: 56px;
   text-align: end;
 }
 
-.numpud {
+.numPad {
   display: flex;
   flex-wrap: wrap-reverse;
   align-items: center;
   justify-items: space-around;
-  width: 100%;
+  width: 60%;
 }
 
 .operatorPud {
