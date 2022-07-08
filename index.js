@@ -9,37 +9,43 @@ const CALCULATOR_CONFIG = {
   7: { type: 'number', value: 7, title: '7' },
   8: { type: 'number', value: 8, title: '8' },
   9: { type: 'number', value: 9, title: '9' },
+
   plus: {
     type: 'operator',
     value: 'plus',
     title: '+',
-    handler: function (firstValue, seconValue) {
-      return parseFloat(firstValue) + parseFloat(seconValue);
+    handler: function (firstOperand, secondOperand) {
+      return parseFloat(firstOperand) + parseFloat(secondOperand);
     },
   },
   minus: {
     type: 'operator',
     value: 'minus',
     title: '-',
-    handler: function (firstValue, seconValue) {
-      return parseFloat(firstValue) - parseFloat(seconValue);
+    handler: function (firstOperand, secondOperand) {
+      return parseFloat(firstOperand) - parseFloat(secondOperand);
     },
   },
   divide: {
     type: 'operator',
     value: 'divide',
     title: '&#247',
-    handler: function (firstValue, seconValue) {
-      return parseFloat(firstValue) / parseFloat(seconValue);
+    handler: function (firstOperand, secondOperand) {
+      return parseFloat(firstOperand) / parseFloat(secondOperand);
     },
   },
   multiply: {
     type: 'operator',
     value: 'multiply',
     title: '&#215',
-    handler: function (firstValue, seconValue) {
-      return parseFloat(firstValue) * parseFloat(seconValue);
+    handler: function (firstOperand, secondOperand) {
+      return parseFloat(firstOperand) * parseFloat(secondOperand);
     },
+  },
+  dot: {
+    type: 'number',
+    value: '.',
+    title: '.',
   },
   clear: {
     type: 'clear',
@@ -113,13 +119,6 @@ class Calculator {
   }
 
   init = () => {
-    console.log('this.firstOperand');
-    console.log(this.firstOperand);
-    console.log('this.secondOperand');
-    console.log(this.secondOperand);
-    console.log('this.operator');
-    console.log(this.operator);
-
     this.root.appendChild(this.screen.render());
 
     this.numPad = document.createElement('div');
@@ -149,9 +148,17 @@ class Calculator {
         switch (type) {
           case 'number':
             if (!this.operator) {
-              this.setOperand(value, 'firstOperand');
+              if (value === '.' && !this.firstOperand) {
+                this.setOperand('0.', 'firstOperand', true);
+              } else {
+                this.setOperand(value, 'firstOperand');
+              }
             } else {
-              this.setOperand(value, 'secondOperand');
+              if (value === '.' && !this.secondOperand) {
+                this.setOperand('0.', 'secondOperand');
+              } else {
+                this.setOperand(value, 'secondOperand');
+              }
             }
             this.lastEqualsButton = false;
             this.lastOperatorButton = false;
@@ -177,22 +184,20 @@ class Calculator {
             this.lastOperatorButton = false;
             break;
           case 'clear':
-            this.result = '';
-            this.operator = null;
-            this.setOperand('', 'firstOperand', true);
-            this.setOperand('', 'secondOperand', true);
-            this.lastEqualsButton = false;
-            this.lastOperatorButton = false;
-            this.screen.setValue(0);
+            this.clearAll();
             break;
           case 'delete':
-            console.log(Number(this.result.toString().slice(0, -1)));
-            this.result = Number(this.result.toString().slice(0, -1));
-            this.setOperand(this.result, 'firstOperand', true);
-            this.setOperand('', 'secondOperand', true);
-            this.operator = null;
-            this.screen.setValue(this.roundUpTo8(this.result));
+            if (this.result == 'Infinity') {
+              this.clearAll();
+            } else {
+              this.result = Number(this.result.toString().slice(0, -1));
+              this.setOperand(this.result, 'firstOperand', true);
+              this.setOperand('', 'secondOperand', true);
+              this.operator = null;
+              this.screen.setValue(this.roundUpTo8(this.result));
+            }
             break;
+
           default:
             return;
         }
@@ -200,6 +205,15 @@ class Calculator {
     });
   };
 
+  clearAll() {
+    this.result = '';
+    this.operator = null;
+    this.setOperand('', 'firstOperand', true);
+    this.setOperand('', 'secondOperand', true);
+    this.lastEqualsButton = false;
+    this.lastOperatorButton = false;
+    this.screen.setValue(0);
+  }
   setOperand = (newValue, operand, replace = false) => {
     console.log('this.lastOperatorButton');
     console.log(this.lastOperatorButton);
@@ -226,7 +240,6 @@ class Calculator {
   };
 
   roundUpTo8 = (number, decimals = 8) => {
-    // return +(Math.round(number + 'e+' + decimals) + 'e-' + decimals);
     let num = Number(number);
     return parseFloat(num.toFixed(decimals));
   };
