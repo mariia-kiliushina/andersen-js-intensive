@@ -17,6 +17,30 @@ const CALCULATOR_CONFIG = {
       return parseFloat(firstValue) + parseFloat(seconValue);
     },
   },
+  minus: {
+    type: 'operator',
+    value: 'minus',
+    title: '-',
+    handler: function (firstValue, seconValue) {
+      return parseFloat(firstValue) - parseFloat(seconValue);
+    },
+  },
+  divide: {
+    type: 'operator',
+    value: 'divide',
+    title: '/',
+    handler: function (firstValue, seconValue) {
+      return parseFloat(firstValue) / parseFloat(seconValue);
+    },
+  },
+  multiply: {
+    type: 'operator',
+    value: 'multiply',
+    title: '*',
+    handler: function (firstValue, seconValue) {
+      return parseFloat(firstValue) * parseFloat(seconValue);
+    },
+  },
   equal: { type: 'result', value: 'equal', title: '=' },
 };
 
@@ -73,6 +97,7 @@ class Calculator {
     this.operator = null;
     this.result = '';
     this.lastEqualsButton = false;
+    this.lastOperatorButton = false;
 
     this.init();
   }
@@ -118,24 +143,28 @@ class Calculator {
             } else {
               this.setOperand(value, 'secondOperand');
             }
+            this.lastEqualsButton = false;
+            this.lastOperatorButton = false;
             break;
           case 'operator':
             if (this.firstOperand && this.secondOperand === '') {
             } else if (this.firstOperand && this.secondOperand && !this.lastEqualsButton) {
               this.calculateResult(this.firstOperand, this.secondOperand, this.operator);
-              this.setOperand('', 'secondOperand');
-              this.setOperand(this.result, 'firstOperand');
+              this.setOperand('', 'secondOperand', true);
+              this.setOperand(this.result, 'firstOperand', true);
             } else if (this.firstOperand && this.secondOperand && this.lastEqualsButton) {
               this.setOperand(this.result, 'secondOperand');
               this.setOperand(this.result, 'firstOperand');
             }
             this.operator = value;
             this.lastEqualsButton = false;
+            this.lastOperatorButton = true;
             break;
           case 'result':
             this.calculateResult(this.firstOperand, this.secondOperand, this.operator);
-            this.setOperand(this.result, 'firstOperand');
+            this.setOperand(this.result, 'firstOperand', true);
             this.lastEqualsButton = true;
+            this.lastOperatorButton = false;
             break;
           default:
             return;
@@ -144,8 +173,16 @@ class Calculator {
     });
   };
 
-  setOperand = (newValue, operand) => {
-    this[operand] = newValue;
+  setOperand = (newValue, operand, replace = false) => {
+    console.log('this.lastOperatorButton');
+    console.log(this.lastOperatorButton);
+    console.log('this.lastEqualsButton');
+    console.log(this.lastEqualsButton);
+    if (this.lastOperatorButton || this.lastEqualsButton || replace) {
+      this[operand] = newValue;
+    } else {
+      this[operand] += newValue;
+    }
     this.screen.setValue(this[operand]);
   };
 
