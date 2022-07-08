@@ -28,7 +28,7 @@ const CALCULATOR_CONFIG = {
   divide: {
     type: 'operator',
     value: 'divide',
-    title: '/',
+    title: '&#247',
     handler: function (firstValue, seconValue) {
       return parseFloat(firstValue) / parseFloat(seconValue);
     },
@@ -36,10 +36,20 @@ const CALCULATOR_CONFIG = {
   multiply: {
     type: 'operator',
     value: 'multiply',
-    title: '*',
+    title: '&#215',
     handler: function (firstValue, seconValue) {
       return parseFloat(firstValue) * parseFloat(seconValue);
     },
+  },
+  clear: {
+    type: 'clear',
+    value: 'clear',
+    title: 'C',
+  },
+  delete: {
+    type: 'delete',
+    value: 'delete',
+    title: '&#8594',
   },
   equal: { type: 'result', value: 'equal', title: '=' },
 };
@@ -55,7 +65,7 @@ class Button {
 
   render() {
     const button = document.createElement('button');
-    button.innerText = this.title;
+    button.innerHTML = this.title;
     button.setAttribute('data-value', this.value);
     button.setAttribute('data-type', this.type);
     button.classList.add('button');
@@ -165,6 +175,18 @@ class Calculator {
             this.setOperand(this.result, 'firstOperand', true);
             this.lastEqualsButton = true;
             this.lastOperatorButton = false;
+            break;
+          case 'clear':
+            this.result = '';
+            this.operator = null;
+            this.setOperand('', 'firstOperand', true);
+            this.setOperand('', 'secondOperand', true);
+            this.lastEqualsButton = false;
+            this.lastOperatorButton = false;
+            this.screen.setValue(0);
+            break;
+          case 'delete':
+            this.result.slice(0, -1);
             break;
           default:
             return;
