@@ -186,7 +186,12 @@ class Calculator {
             this.screen.setValue(0);
             break;
           case 'delete':
-            this.result.slice(0, -1);
+            console.log(Number(this.result.toString().slice(0, -1)));
+            this.result = Number(this.result.toString().slice(0, -1));
+            this.setOperand(this.result, 'firstOperand', true);
+            this.setOperand('', 'secondOperand', true);
+            this.operator = null;
+            this.screen.setValue(this.result);
             break;
           default:
             return;
@@ -209,12 +214,21 @@ class Calculator {
   };
 
   calculateResult = (firstOperand, secondOperand, operator) => {
+    if (!this.operator) {
+      return null;
+    }
     const handler = this.config[operator].handler;
 
-    if (handler && this.firstOperand && this.secondOperand && this.operator) {
+    if (handler && (this.firstOperand || this.secondOperand) && this.operator) {
+      // this.result = this.roundUpTo8(handler(firstOperand, secondOperand));
       this.result = handler(firstOperand, secondOperand);
       this.screen.setValue(this.result);
     }
+  };
+
+  roundUpTo8 = (number, decimals = 8) => {
+    // return +(Math.round(number + 'e+' + decimals) + 'e-' + decimals);
+    return parseFloat(number.toFixed(decimals));
   };
 }
 
