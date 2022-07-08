@@ -43,7 +43,7 @@ const CALCULATOR_CONFIG = {
     },
   },
   dot: {
-    type: 'number',
+    type: 'dot',
     value: '.',
     title: '.',
   },
@@ -112,9 +112,10 @@ class Calculator {
     this.secondOperand = '';
     this.operator = null;
     this.result = '';
+    this.display = '';
     this.lastEqualsButton = false;
     this.lastOperatorButton = false;
-
+    this.lastDelete = false;
     this.init();
   }
 
@@ -146,22 +147,32 @@ class Calculator {
         console.log(this.result);
 
         switch (type) {
+          case 'dot':
+            break;
           case 'number':
             if (!this.operator) {
-              if (value === '.' && !this.firstOperand) {
+              if (!this.firstOperand) {
                 this.setOperand('0.', 'firstOperand', true);
+                this.setOperand('', 'secondOperand', true);
+                this.display = this.firstOperand;
               } else {
-                this.setOperand(value, 'firstOperand');
+                this.setOperand(value, 'firstOperand', false);
+                this.display = this.firstOperand;
               }
             } else {
               if (value === '.' && !this.secondOperand) {
-                this.setOperand('0.', 'secondOperand');
+                this.setOperand('0.', 'secondOperand', true);
+                this.display = this.secondOperand;
               } else {
-                this.setOperand(value, 'secondOperand');
+                this.setOperand(value, 'secondOperand', false);
+                this.display = this.secondOperand;
               }
             }
+            this.screen.setValue(this.roundUpTo8(this.display));
             this.lastEqualsButton = false;
             this.lastOperatorButton = false;
+            console.log('THIS DISPLAY');
+            console.log(this.display);
             break;
           case 'operator':
             if (this.firstOperand && this.secondOperand === '') {
@@ -169,32 +180,50 @@ class Calculator {
               this.calculateResult(this.firstOperand, this.secondOperand, this.operator);
               this.setOperand('', 'secondOperand', true);
               this.setOperand(this.result, 'firstOperand', true);
+              this.display = this.firstOperand;
             } else if (this.firstOperand && this.secondOperand && this.lastEqualsButton) {
-              this.setOperand(this.result, 'secondOperand');
-              this.setOperand(this.result, 'firstOperand');
+              // this.lastOperatorButton || this.lastEqualsButton
+              if (this.lastEqualsButton) {
+                this.setOperand(this.result, 'secondOperand', true);
+                this.setOperand(this.result, 'firstOperand', true);
+              }
             }
             this.operator = value;
             this.lastEqualsButton = false;
             this.lastOperatorButton = true;
+            console.log('THIS DISPLAY');
+            console.log(this.display);
             break;
           case 'result':
             this.calculateResult(this.firstOperand, this.secondOperand, this.operator);
             this.setOperand(this.result, 'firstOperand', true);
+            this.display = this.result;
             this.lastEqualsButton = true;
             this.lastOperatorButton = false;
+            console.log('THIS DISPLAY');
+            console.log(this.display);
             break;
           case 'clear':
             this.clearAll();
+            this.screen.setValue(0);
+            console.log('THIS DISPLAY');
+            console.log(this.display);
             break;
           case 'delete':
+            this.lastDelete = true;
             if (this.result == 'Infinity') {
               this.clearAll();
             } else {
+              console.log(this.result);
               this.result = Number(this.result.toString().slice(0, -1));
               this.setOperand(this.result, 'firstOperand', true);
-              this.setOperand('', 'secondOperand', true);
+              this.result = this.firstOperand;
+              this.display = this.result;
+              this.screen.setValue(this.roundUpTo8(this.display));
               this.operator = null;
-              this.screen.setValue(this.roundUpTo8(this.result));
+              this.result = this.firstOperand;
+              console.log('THIS DISPLAY');
+              console.log(this.display);
             }
             break;
 
@@ -207,24 +236,22 @@ class Calculator {
 
   clearAll() {
     this.result = '';
+    this.display = '';
     this.operator = null;
     this.setOperand('', 'firstOperand', true);
     this.setOperand('', 'secondOperand', true);
     this.lastEqualsButton = false;
     this.lastOperatorButton = false;
-    this.screen.setValue(0);
   }
   setOperand = (newValue, operand, replace = false) => {
-    console.log('this.lastOperatorButton');
-    console.log(this.lastOperatorButton);
-    console.log('this.lastEqualsButton');
-    console.log(this.lastEqualsButton);
-    if (this.lastOperatorButton || this.lastEqualsButton || replace) {
+    if (replace) {
       this[operand] = newValue;
     } else {
       this[operand] += newValue;
     }
-    this.screen.setValue(this.roundUpTo8(this[operand]));
+    this.display = this[operand];
+
+    this.screen.setValue(this.roundUpTo8(this.display));
   };
 
   calculateResult = (firstOperand, secondOperand, operator) => {
@@ -235,7 +262,9 @@ class Calculator {
 
     if (handler && (this.firstOperand || this.secondOperand) && this.operator) {
       this.result = handler(firstOperand, secondOperand);
-      this.screen.setValue(this.roundUpTo8(this.result));
+      this.display = this.result;
+      this.screen.setValue(this.roundUpTo8(this.display));
+      this.setOperand('', 'secondOperand', true);
     }
   };
 
