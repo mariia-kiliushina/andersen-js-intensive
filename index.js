@@ -191,7 +191,7 @@ class Calculator {
             this.setOperand(this.result, 'firstOperand', true);
             this.setOperand('', 'secondOperand', true);
             this.operator = null;
-            this.screen.setValue(this.result);
+            this.screen.setValue(this.roundUpTo8(this.result));
             break;
           default:
             return;
@@ -210,7 +210,7 @@ class Calculator {
     } else {
       this[operand] += newValue;
     }
-    this.screen.setValue(this[operand]);
+    this.screen.setValue(this.roundUpTo8(this[operand]));
   };
 
   calculateResult = (firstOperand, secondOperand, operator) => {
@@ -220,15 +220,15 @@ class Calculator {
     const handler = this.config[operator].handler;
 
     if (handler && (this.firstOperand || this.secondOperand) && this.operator) {
-      // this.result = this.roundUpTo8(handler(firstOperand, secondOperand));
       this.result = handler(firstOperand, secondOperand);
-      this.screen.setValue(this.result);
+      this.screen.setValue(this.roundUpTo8(this.result));
     }
   };
 
   roundUpTo8 = (number, decimals = 8) => {
     // return +(Math.round(number + 'e+' + decimals) + 'e-' + decimals);
-    return parseFloat(number.toFixed(decimals));
+    let num = Number(number);
+    return parseFloat(num.toFixed(decimals));
   };
 }
 
