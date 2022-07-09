@@ -1,0 +1,96 @@
+body {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3vh;
+  align-items: center;
+  justify-items: center;
+  width: 40vw;
+  margin: 0 auto;
+  padding-top: 10vh;
+}
+
+.input {
+  font-family: inherit;
+  height: 5vh;
+  width: 100%;
+  font-size: 56px;
+  text-align: end;
+  padding: 20px 0;
+  white-space: normal;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.numPad {
+  display: flex;
+  width: 100%;
+  column-gap: 1vh;
+  justify-content: center;
+  align-items: center;
+  justify-items: space-around;
+}
+
+.numbersWrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  flex-grow: 1;
+  grid-gap: 1vh;
+}
+.operatorsWrapper {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  flex-grow: 1;
+  max-width: 35%;
+  grid-gap: 1vh;
+}
+
+.operatorPud {
+  display: flex;
+  flex-wrap: wrap;
+
+  align-items: center;
+  justify-items: space-around;
+  width: 100%;
+}
+.button {
+  min-height: 7vh;
+  font-size: 30px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.button:hover {
+  /* background-color: rgb(162, 161, 161); */
+  box-shadow: 5px 5px 15px rgb(184, 184, 184);
+}
+
+.numButton {
+  background-color: light-gray;
+}
+.operatorButton {
+  background-color: black;
+  color: white;
+}
+.clearButton {
+  background-color: rgb(133, 13, 7);
+  color: white;
+}
+.calculateButton {
+  grid-column: 2;
+  grid-row: 3 / 5;
+  height: 100%;
+}
+.funcButton {
+  background-color: rgb(15, 5, 70);
+  color: white;
+}
