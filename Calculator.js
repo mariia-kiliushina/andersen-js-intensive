@@ -17,6 +17,7 @@ export class Calculator {
     this.operandBeingEditedName = 'firstOperand';
     this.shouldSetStateToDefaultOnCharacterInput = false;
     this.lastEqualsButton = false;
+    this.lastDelete = false;
   };
 
   roundValue = (value) => {
@@ -50,7 +51,7 @@ export class Calculator {
     this._displayedValue = calculationResult;
     console.log('this._displayedValue');
     console.log(this._displayedValue);
-    if (newValue.endsWith('.')) {
+    if (newValue.endsWith('.') && !this.lastDelete) {
       this.screen.setValue(this._displayedValue);
       return;
     }
@@ -144,6 +145,7 @@ export class Calculator {
       switch (buttonType) {
         case 'number':
           this.lastEqualsButton = false;
+          this.lastDelete = false;
           if (this.shouldSetStateToDefaultOnCharacterInput) this.setStateToDeafult();
           this[this.operandBeingEditedName] += buttonValue;
           this.displayedValue = this[this.operandBeingEditedName];
@@ -152,6 +154,7 @@ export class Calculator {
           console.log('this.operandBeingEditedName');
           console.log(this.operandBeingEditedName);
           this.lastEqualsButton = false;
+          this.lastDelete = false;
           if (this.shouldSetStateToDefaultOnCharacterInput) {
             this.setStateToDeafult();
           }
@@ -186,6 +189,7 @@ export class Calculator {
           break;
         case 'inverse':
           this.lastEqualsButton = false;
+          this.lastDelete = false;
           if (this.operandBeingEditedName === 'firstOperand') {
             this.firstOperand = this.roundValue(String(this.firstOperand * -1));
             this.displayedValue = this.firstOperand;
@@ -201,6 +205,7 @@ export class Calculator {
           let previousOperator = this.operator;
           let currentOperator = buttonValue;
           this.lastEqualsButton = false;
+          this.lastDelete = false;
           this.shouldSetStateToDefaultOnCharacterInput = false;
           if (this.firstOperand === '') break;
           this.operandBeingEditedName = 'secondOperand';
@@ -208,6 +213,7 @@ export class Calculator {
           this.operator = currentOperator;
           break;
         case 'calculate':
+          this.lastDelete = false;
           let prevOperator = this.operator;
           this.calculateResult(prevOperator);
           this.shouldSetStateToDefaultOnCharacterInput = true;
@@ -215,10 +221,12 @@ export class Calculator {
           break;
         case 'clear':
           this.lastEqualsButton = false;
+          this.lastDelete = false;
           this.setStateToDeafult();
           break;
         case 'delete':
           this.lastEqualsButton = false;
+          this.lastDelete = true;
           if (this._displayedValue == 0) return;
           let newValue;
           if (this.operandBeingEditedName === 'firstOperand') {
