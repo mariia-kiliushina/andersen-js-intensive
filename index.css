@@ -1,3 +1,7 @@
+body {
+  font-family: 'Courier New', Courier, monospace;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -10,11 +14,13 @@
 }
 
 .input {
-  height: 10vh;
+  font-family: inherit;
+  height: 5vh;
   width: 100%;
   font-size: 56px;
   text-align: end;
-  padding: 0;
+  padding: 20px 0;
+  white-space: normal;
 }
 
 .input:focus {
