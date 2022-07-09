@@ -37,8 +37,6 @@ export class Calculator {
     if (newValue.endsWith('0')) {
       calculationResult = this.roundValue(newValue);
       this._displayedValue = calculationResult;
-      console.log('this._displayedValue');
-      console.log(this._displayedValue);
       this.screen.setValue(calculationResult);
       return;
     }
@@ -49,8 +47,6 @@ export class Calculator {
     }
 
     this._displayedValue = calculationResult;
-    console.log('this._displayedValue');
-    console.log(this._displayedValue);
     if (newValue.endsWith('.') && !this.lastDelete) {
       this.screen.setValue(this._displayedValue);
       return;
@@ -80,8 +76,6 @@ export class Calculator {
 
     let handler = map[previousOperator];
     const calculationResult = handler(this.firstOperand, this.secondOperand).toString();
-    console.log('calculationResult');
-    console.log(calculationResult);
     this.displayedValue = calculationResult;
     this.firstOperand = calculationResult;
     if (this.lastEqualsButton === false) {
@@ -131,13 +125,6 @@ export class Calculator {
     this.numPad.classList.add('numPad');
 
     this.numPad.addEventListener('click', (event) => {
-      console.log('this.firstOperand');
-      console.log(this.firstOperand);
-      console.log('this.secondOperand');
-      console.log(this.secondOperand);
-      console.log('this.operator');
-      console.log(this.operator);
-
       if (!event.target.hasAttribute('data-value')) return;
 
       const buttonType = event.target.getAttribute('data-type');
@@ -151,8 +138,6 @@ export class Calculator {
           this.displayedValue = this[this.operandBeingEditedName];
           break;
         case 'period':
-          console.log('this.operandBeingEditedName');
-          console.log(this.operandBeingEditedName);
           this.lastEqualsButton = false;
           this.lastDelete = false;
           if (this.shouldSetStateToDefaultOnCharacterInput) {
@@ -246,8 +231,6 @@ export class Calculator {
             }
             this.displayedValue = newValue;
             this.firstOperand = this._displayedValue;
-            console.log('this._displayedValue  in delete');
-            console.log(this._displayedValue);
             break;
           }
           if (this.operandBeingEditedName === 'secondOperand') {
