@@ -17,7 +17,7 @@ export const CALCULATOR_CONFIG = {
     numbersPad: true,
   },
   11: {
-    type: 'dot',
+    type: 'period',
     value: '.',
     title: '.',
     numbersPad: true,

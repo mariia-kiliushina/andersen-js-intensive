@@ -50,6 +50,10 @@ export class Calculator {
     this._displayedValue = calculationResult;
     console.log('this._displayedValue');
     console.log(this._displayedValue);
+    if (newValue.endsWith('.')) {
+      this.screen.setValue(this._displayedValue);
+      return;
+    }
     this.screen.setValue(this.roundValue(calculationResult));
   }
 
@@ -72,8 +76,6 @@ export class Calculator {
         return parseFloat(this.firstOperand) - parseFloat(this.secondOperand);
       },
     };
-    console.log('previousOperator');
-    console.log(previousOperator);
 
     let handler = map[previousOperator];
     const calculationResult = handler(this.firstOperand, this.secondOperand).toString();
@@ -139,7 +141,6 @@ export class Calculator {
 
       const buttonType = event.target.getAttribute('data-type');
       const buttonValue = event.target.getAttribute('data-value');
-
       switch (buttonType) {
         case 'number':
           this.lastEqualsButton = false;
@@ -148,6 +149,8 @@ export class Calculator {
           this.displayedValue = this[this.operandBeingEditedName];
           break;
         case 'period':
+          console.log('this.operandBeingEditedName');
+          console.log(this.operandBeingEditedName);
           this.lastEqualsButton = false;
           if (this.shouldSetStateToDefaultOnCharacterInput) {
             this.setStateToDeafult();
@@ -174,7 +177,7 @@ export class Calculator {
           if (
             this.operandBeingEditedName === 'secondOperand' &&
             this.secondOperand !== '' &&
-            !this.firstOperand.includes('.')
+            !this.secondOperand.includes('.')
           ) {
             this.secondOperand += buttonValue;
             this.displayedValue = this.secondOperand;
@@ -206,7 +209,6 @@ export class Calculator {
           break;
         case 'calculate':
           let prevOperator = this.operator;
-          // this.lastEqualsButton = true;
           this.calculateResult(prevOperator);
           this.shouldSetStateToDefaultOnCharacterInput = true;
           this.operandBeingEditedName = 'firstOperand';
