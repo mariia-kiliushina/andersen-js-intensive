@@ -9,7 +9,6 @@ export class Calculator {
     this.init();
     this.setStateToDeafult();
   }
-
   setStateToDeafult = () => {
     this.operator = null;
     this.displayedValue = '';
@@ -17,9 +16,11 @@ export class Calculator {
     this.secondOperand = '';
     this.operandBeingEditedName = 'firstOperand';
     this.shouldSetStateToDefaultOnCharacterInput = false;
+    this.lastEqualsButton = false;
   };
 
   roundValue = (value) => {
+    if (value === '') return 0;
     const parsedValue = parseFloat(value);
     const fixedValue = parsedValue.toFixed(8);
     const parsedFixedValue = parseFloat(fixedValue);
@@ -33,20 +34,27 @@ export class Calculator {
   set displayedValue(newValue) {
     let calculationResult;
 
-    if (newValue === '' || newValue.endsWith('.')) {
+    // if (newValue === '' || newValue.endsWith('.')) {
+    if (newValue === '') {
       calculationResult = newValue;
     } else {
-      calculationResult = this.roundValue(newValue);
+      calculationResult = newValue;
     }
 
     this._displayedValue = calculationResult;
-    this.screen.setValue(calculationResult);
+    console.log('this._displayedValue');
+    console.log(this._displayedValue);
+    this.screen.setValue(this.roundValue(calculationResult));
   }
 
   calculateResult() {
+    if (this.lastEqualsButton === false) {
+      this.secondOperand = '';
+    }
     if (this.operator === null) return;
     if (this.firstOperand === '') return;
     if (this.secondOperand === '') return;
+
     let map = {
       divide: () => {
         return parseFloat(this.firstOperand) / parseFloat(this.secondOperand);
@@ -62,12 +70,9 @@ export class Calculator {
       },
     };
     let handler = map[this.operator];
-    console.log(handler);
-
     const calculationResult = handler(this.firstOperand, this.secondOperand).toString();
     this.displayedValue = calculationResult;
     this.firstOperand = calculationResult;
-    this.secondOperand = '';
   }
 
   init = () => {
@@ -90,8 +95,8 @@ export class Calculator {
           return 'operatorButton';
         } else if (child.getAttribute('data-type') === 'clear') {
           return 'clearButton';
-        } else if (child.getAttribute('data-type') === 'result') {
-          return 'resultButton';
+        } else if (child.getAttribute('data-type') === 'calculate') {
+          return 'calculateButton';
         } else {
           return 'funcButton';
         }
@@ -112,6 +117,13 @@ export class Calculator {
     this.numPad.classList.add('numPad');
 
     this.numPad.addEventListener('click', (event) => {
+      console.log('this.firstOperand');
+      console.log(this.firstOperand);
+      console.log('this.secondOperand');
+      console.log(this.secondOperand);
+      console.log('this.operator');
+      console.log(this.operator);
+
       if (!event.target.hasAttribute('data-value')) return;
 
       const buttonType = event.target.getAttribute('data-type');
@@ -119,11 +131,13 @@ export class Calculator {
 
       switch (buttonType) {
         case 'number':
+          this.lastEqualsButton = false;
           if (this.shouldSetStateToDefaultOnCharacterInput) this.setStateToDeafult();
           this[this.operandBeingEditedName] += buttonValue;
           this.displayedValue = this[this.operandBeingEditedName];
           break;
         case 'period':
+          this.lastEqualsButton = false;
           if (this.shouldSetStateToDefaultOnCharacterInput) {
             this.setStateToDeafult();
           }
@@ -157,6 +171,7 @@ export class Calculator {
           }
           break;
         case 'inverse':
+          this.lastEqualsButton = false;
           if (this.operandBeingEditedName === 'firstOperand') {
             this.firstOperand = this.roundValue(String(this.firstOperand * -1));
             this.displayedValue = this.firstOperand;
@@ -169,6 +184,7 @@ export class Calculator {
           }
           break;
         case 'operator':
+          this.lastEqualsButton = false;
           this.shouldSetStateToDefaultOnCharacterInput = false;
           if (this.firstOperand === '') break;
           this.operator = buttonValue;
@@ -176,22 +192,36 @@ export class Calculator {
           this.calculateResult();
           break;
         case 'calculate':
+          this.lastEqualsButton = true;
           this.calculateResult();
           this.shouldSetStateToDefaultOnCharacterInput = true;
           this.operandBeingEditedName = 'firstOperand';
           break;
         case 'clear':
+          this.lastEqualsButton = false;
           this.setStateToDeafult();
           break;
         case 'delete':
+          this.lastEqualsButton = false;
+          if (this._displayedValue == 0) return;
+          debugger;
+          let newValue;
           if (this.operandBeingEditedName === 'firstOperand') {
-            const newValue = this.firstOperand.slice(0, -1);
+            if (this.firstOperand.length === 2 && this.firstOperand.includes('-')) {
+              newValue = 0;
+            } else {
+              newValue = this.firstOperand.slice(0, -1);
+            }
             this.firstOperand = newValue;
             this.displayedValue = newValue;
             break;
           }
           if (this.operandBeingEditedName === 'secondOperand') {
-            const newValue = this.secondOperand.slice(0, -1);
+            if (this.secondOperand.length === 2 && this.secondOperand.includes('-')) {
+              newValue = 0;
+            } else {
+              newValue = this.secondOperand.slice(0, -1);
+            }
             this.secondOperand = newValue;
             this.displayedValue = newValue;
             break;

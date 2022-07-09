@@ -66,5 +66,5 @@ export const CALCULATOR_CONFIG = {
     value: 'inverse',
     title: '&#177',
   },
-  17: { type: 'result', value: 'equal', title: '=' },
+  17: { type: 'calculate', value: 'calculate', title: '=' },
 };
