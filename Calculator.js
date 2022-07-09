@@ -33,8 +33,14 @@ export class Calculator {
 
   set displayedValue(newValue) {
     let calculationResult;
-
-    // if (newValue === '' || newValue.endsWith('.')) {
+    if (newValue.endsWith('0')) {
+      calculationResult = this.roundValue(newValue);
+      this._displayedValue = calculationResult;
+      console.log('this._displayedValue');
+      console.log(this._displayedValue);
+      this.screen.setValue(calculationResult);
+      return;
+    }
     if (newValue === '') {
       calculationResult = newValue;
     } else {
@@ -47,11 +53,8 @@ export class Calculator {
     this.screen.setValue(this.roundValue(calculationResult));
   }
 
-  calculateResult() {
-    if (this.lastEqualsButton === false) {
-      this.secondOperand = '';
-    }
-    if (this.operator === null) return;
+  calculateResult(previousOperator) {
+    if (previousOperator === null) return;
     if (this.firstOperand === '') return;
     if (this.secondOperand === '') return;
 
@@ -69,10 +72,18 @@ export class Calculator {
         return parseFloat(this.firstOperand) - parseFloat(this.secondOperand);
       },
     };
-    let handler = map[this.operator];
+    console.log('previousOperator');
+    console.log(previousOperator);
+
+    let handler = map[previousOperator];
     const calculationResult = handler(this.firstOperand, this.secondOperand).toString();
+    console.log('calculationResult');
+    console.log(calculationResult);
     this.displayedValue = calculationResult;
     this.firstOperand = calculationResult;
+    if (this.lastEqualsButton === false) {
+      this.secondOperand = '';
+    }
   }
 
   init = () => {
@@ -184,16 +195,19 @@ export class Calculator {
           }
           break;
         case 'operator':
+          let previousOperator = this.operator;
+          let currentOperator = buttonValue;
           this.lastEqualsButton = false;
           this.shouldSetStateToDefaultOnCharacterInput = false;
           if (this.firstOperand === '') break;
-          this.operator = buttonValue;
           this.operandBeingEditedName = 'secondOperand';
-          this.calculateResult();
+          this.calculateResult(previousOperator);
+          this.operator = currentOperator;
           break;
         case 'calculate':
-          this.lastEqualsButton = true;
-          this.calculateResult();
+          let prevOperator = this.operator;
+          // this.lastEqualsButton = true;
+          this.calculateResult(prevOperator);
           this.shouldSetStateToDefaultOnCharacterInput = true;
           this.operandBeingEditedName = 'firstOperand';
           break;
@@ -204,21 +218,31 @@ export class Calculator {
         case 'delete':
           this.lastEqualsButton = false;
           if (this._displayedValue == 0) return;
-          debugger;
           let newValue;
           if (this.operandBeingEditedName === 'firstOperand') {
+            if (this.firstOperand.length > 10) {
+              this.firstOperand = this.roundValue(this.firstOperand);
+              this.displayedValue = this.firstOperand;
+            }
+            if (this.secondOperand.length > 10) {
+              this.secondOperand = this.roundValue(this.secondOperand);
+              this.displayedValue = this.secondOperand;
+            }
+
             if (this.firstOperand.length === 2 && this.firstOperand.includes('-')) {
-              newValue = 0;
+              newValue = '';
             } else {
               newValue = this.firstOperand.slice(0, -1);
             }
-            this.firstOperand = newValue;
             this.displayedValue = newValue;
+            this.firstOperand = this._displayedValue;
+            console.log('this._displayedValue  in delete');
+            console.log(this._displayedValue);
             break;
           }
           if (this.operandBeingEditedName === 'secondOperand') {
             if (this.secondOperand.length === 2 && this.secondOperand.includes('-')) {
-              newValue = 0;
+              newValue = '';
             } else {
               newValue = this.secondOperand.slice(0, -1);
             }
